@@ -1,7 +1,13 @@
 import pymongo
+import os
 from flask import request
+from dotenv import load_dotenv
 
-client = pymongo.MongoClient('mongodb+srv://test:test1234@cluster0.mrtn9d5.mongodb.net/')
+load_dotenv()
+
+Mongo_uri = os.getenv("MONGO_URI")
+
+client = pymongo.MongoClient(MONGO_URI)
 userdb = client['userdb']
 users = userdb.customers
 

@@ -1,0 +1,421 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta charset='utf-8'>
+    <meta http-equiv='X-UA-Compatible' content='IE=edge'>
+    <title>TEXT TO ISL</title>
+    <meta name='viewport' content='width=device-width, initial-scale=1'>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js" integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
+    <link rel='stylesheet' type='text/css' media='screen' href="{{url_for('static',filename='./style.css')}}">
+
+    <!-- <link rel="stylesheet" href="http://vhg.cmp.uea.ac.uk/tech/jas/vhg2021/cwa/cwasa.css" /> -->
+    <!-- <script type="text/javascript" src="http://vhg.cmp.uea.ac.uk/tech/jas/vhg2021/cwa/allcsa.js"></script> -->
+
+    <meta http-equiv="Access-Control-Allow-Methods" content="GET">
+    <link rel="stylesheet"
+    href="{{url_for('static',filename='css/cwasa.css')}}">
+    <script type="text/javascript"
+    src="{{url_for('static',filename='js/allcsa.js')}}"></script>
+    <!-- player css and js files -->
+    <!-- <link rel="stylesheet" href="css/cwasa.css" /> -->
+    <!-- <script type="text/javascript" src="js/allcsa.js"></script> -->
+
+    <script language="javascript">
+        // Initial configuration
+        var initCfg = {
+            "avsbsl" : ["luna", "siggi", "anna", "marc", "francoise"],
+            "avSettings" : { "avList": "avsbsl", "initAv": "marc" }
+        };
+
+        // global variable to store the sigmal list
+        var sigmlList = null;
+
+        // global variable to tell if avatar is ready or not
+        var tuavatarLoaded = false;
+
+
+        var playerAvailableToPlay = true;
+    </script>
+
+
+<style>
+    .navbar {
+        position: absolute;
+        top: 0px;
+        left: 20px;
+        z-index: 10;
+      }
+      
+      .logo {
+        height: 100px;
+        width: auto;
+        object-fit: contain;
+        filter: drop-shadow(0 0 5px #ffd700);
+      }
+    .custom-navbar {
+        background-color: rgba(0, 0, 0, 0.7);
+        padding: 10px 0;
+        position: fixed;
+        width: 100%;
+        top: 0;
+        z-index: 999;
+      }
+  
+      .custom-navbar .nav-link {
+        color: white !important;
+        font-size: 18px;
+        font-weight: 500;
+        transition: color 0.3s ease;
+      }
+  
+      .custom-navbar .nav-link:hover {
+        background: linear-gradient(45deg, #ffd700, #ffb32f, #e44444);
+      }
+      .plasma-btn {
+        position: relative;
+        padding: 16px 40px;
+        font-size: 20px;
+        font-weight: bold;
+        border: none;
+        border-radius: 20px;
+        color: black;
+        background: linear-gradient(45deg, #ffd700, #ffb32f, #e44444);
+        background-size: 400%;
+        background-position: 0% 50%;
+        cursor: pointer;
+        transition: background 0.5s ease, color 0.5s ease;
+        z-index: 1;
+        overflow: hidden;
+        animation: plasmaText 2s infinite ease-in-out;
+      }
+  
+      .plasma-btn::before {
+        content: "";
+        position: absolute;
+        top: -50%;
+        left: -50%;
+        width: 200%;
+        height: 200%;
+        background: radial-gradient(circle at 20% 20%, #ffd700, transparent 40%),
+                    radial-gradient(circle at 80% 30%, #ffb32f, transparent 40%),
+                    radial-gradient(circle at 30% 80%, #e44444, transparent 40%),
+                    radial-gradient(circle at 70% 70%, #ab3a87, transparent 40%);
+        background-blend-mode: screen;
+        animation: plasmaRandom 1s infinite ease-in-out alternate;
+        z-index: 0;
+        filter: blur(35px);
+        opacity: 1;
+        transition: opacity 0.4s ease
+      }
+  
+      .plasma-btn:hover::before {
+        opacity: 0;
+      }
+  
+      .plasma-btn:hover {
+        background: black;
+        color: transparent;
+        animation: none;
+      }
+  
+      .plasma-btn:hover span {
+        background: linear-gradient(45deg, #ffd700, #ffb32f, #e44444);
+        background-size: 400%;
+        background-clip: text;
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        animation: plasmaText 2s infinite ease-in-out;
+      }
+  
+      .plasma-btn span {
+        position: relative;
+        z-index: 2;
+        transition: all 0.5s ease;
+      }
+  
+      @keyframes plasmaRandom {
+        0% {
+          transform: translate(0px, 0px);
+        }
+        20% {
+          transform: translate(10px, -15px);
+        }
+        40% {
+          transform: translate(-20px, 10px);
+        }
+        60% {
+          transform: translate(12px, 15px);
+        }
+        80% {
+          transform: translate(-8px, -18px);
+        }
+        100% {
+          transform: translate(7px, 20px);
+        }
+      }
+  
+      @keyframes plasmaText {
+        0% {
+          background-position: 0% 50%;
+        }
+        50% {
+          background-position: 100% 50%;
+        }
+        100% {
+          background-position: 0% 50%;
+        }
+      }
+</style>    
+
+</head>
+<body style="background-image: url('{{ url_for('static', filename='images/asl-banner.jpeg') }}');background-attachment: fixed;"; onload="CWASA.init(initCfg);">
+    <script language="javascript">  
+
+// console.log("hello");
+
+function playText(stext) {
+	CWASA.playSiGMLText(stext);
+}
+
+// sets url for sigml
+function setSiGMLURL(sigmlURL) {
+	console.log("hello");
+	var loc = window.location.href;
+    var locDir = loc.substring(0, loc.lastIndexOf('/'));
+	// console.log("SiGML: "+sigmlURL);
+	// console.log("Location Dir: "+locDir);
+	sigmlURL = locDir + "/" + sigmlURL;
+    // console.log("here");
+	console.log("URL "+sigmlURL);
+	document.getElementById("URLText").value = sigmlURL;
+	return sigmlURL;
+}
+// starts the player animation
+function startPlayer(sigmlURL) {
+	sigmlURL = setSiGMLURL(sigmlURL);
+	console.log("URL "+sigmlURL);
+    // Equivalent to click on Sign button
+    CWASA.getLogger("myLog","warn");
+	CWASA.playSiGMLURL(sigmlURL);
+    CWASA.getLogger("myLog","warn");
+}
+</script>
+
+<nav class="navbar navbar-expand-lg navbar-dark custom-navbar">
+    <div class="navbar">
+        <img src="./images/lolgo.png" alt="SignWave Logo" class="logo">
+    </div>
+    <div class="container justify-content-center">
+      <ul class="navbar-nav nav-justified w-75">
+        <li class="nav-item">
+          <a class="nav-link" href="/home"onclick="window.location.href=this.href">HOME</a>
+        </li>
+        
+        <li class="nav-item">
+        <a class="nav-link" href="/About" onclick="window.location.href=this.href" >ABOUT US</a>
+        </li>
+      
+        <li class="nav-item">
+          <a class="nav-link" href="/contact" onclick="window.location.href=this.href">CONTACT US</a>
+        </li>
+
+        <li class="nav-item">
+          <a class="nav-link" href="/feedback"onclick="window.location.href=this.href">FEEDBACK</a>
+        </li>
+
+
+      </ul>
+    </div>
+  </nav>
+<div class="main" style="background-image: url('{{ url_for('static', filename='images/asl-banner.jpeg') }}');background-attachment: fixed;" >
+    <h1 style="font-size: 40px;font-weight: 700;color: black ;text-align: center;padding-top: 100px;">SignWave AI</h1><br><br>
+
+    <div class="container" style="display: flex;">
+        <!-- animation player frame -->
+         
+
+        <div class="player card" >
+            <a id="player"></a>
+            <div class="anim"> 
+                <div style="box-sizing: border-box; width: 100%; height: 100%; padding: 15px;" >
+                    <table align="center" style="width:100%; height:100%;" >
+                    <tr align="center">
+                    
+                    <!--================================================================-->
+                    <!-- CWA signing avatar panel 0 -->
+                    <!--================================================================-->
+                    <!-- Replaced by an avatar panel -->
+                    <!--================================================================-->
+                    <td width="100%" height="90%" >
+                        <div class="CWASAAvatar av0" align="center" ></div>
+                    </td>
+                    <!--================================================================-->
+                    
+                    </tr><tr>
+                    
+                    <td align="center" >
+                    
+                    <span class="CWASAAvMenu av0" ></span>
+                    <input type="button" value="Sign" class="bttnPlaySiGMLURL av0" />
+                    <input type="button" value="Stop" class="bttnStop av0" />
+                    <span class="CWASASpeed av0" ></span>
+                    <br/>
+                    
+                    <span style="font-size: 90%;" >
+                    Sign/Frame:
+                    <input class="txtSF av0" value="0/0" type="text">
+                    Gloss:
+                    <input class="txtGloss av0" value="[none]" type="text">
+                    </span>
+                    <span class="spanInfo av0">
+                        Status:
+                        <input type="text" class="statusExtra av0">
+                        </span>
+                    <!--  CachedSiGML URL  -->
+                    <input type="text" id="URLText" class="txtSiGMLURL av0 undisplayed" value="" />
+                    
+                    <script language="javascript">
+                    // Set default sign
+                    // console.log("here");
+                    setSiGMLURL("SignFiles/B.sigml");
+                    
+                    </script>
+                    
+                    </td>
+                    </tr>
+                    
+                    </table>
+                    
+                    </div>
+                    
+            </div>
+            
+        </div>
+        <!-- input for text -->
+         <div style="">
+            <div>
+                <div class="englishInput">
+                    <form method="POST" id="form" >
+                        <!-- Button to start speech recognition -->
+                        <button type="button" id="plasma-btn"class="plasma-btn"><span>Start Recognition</span></button><br><br>
+                        
+                        <!-- Paragraph where the recognized speech will appear -->
+                        <textarea id="text" name="text" autocomplete="off" style="padding: 20px;padding-left: 100px;">Speech will appear here...</textarea><br><br>
+                        
+                        <!-- Submit button -->
+                        <button type="submit" id="submit" class="plasma-btn"><span>Submit</span></button>
+                    </form>
+                    <!-- <button class="btn-primary bttnPlaySiGMLURL av0">Submit</button> -->
+                    <!-- <input type="button" value="Sign" class="bttnPlaySiGMLURL av0" /> -->
+                </div>
+            </div>
+            <div>
+                <div class="curr_playing">
+                    <p style="font-size: 40px;color: antiquewhite;">Current Word :</p><p class="curr_word_playing"></p>
+                </div><br>
+                <div class="islOutput">
+                   <p style="font-size: 40px;color: antiquewhite;">ISL text:</p>  <p style="color: aqua;" id ="isl_text"></p>
+        
+                </div><br>
+
+                <!-- <div class="test_word_list">
+                    <p style="font-size: 40px;color: antiquewhite;"></p>Available Words:- 
+                    <ul class="test_list">
+                       
+                    </ul>
+                </div> -->
+                
+            </div>
+         </div>
+        
+        
+      
+    </div><br><br>
+    <div style="padding-left:16px" class="container;">
+        <h2 style="color: red;font-weight: 500;font-size: 40px;text-align: center;">About Project descriptions </h2>
+        <p style="color:rgb(33, 179, 45);font-size: 25px;font-weight: 400;background-color: antiquewhite;border-radius: 60px;border-width:25px;border-color: aquamarine;text-align: center;"> <br>In recent years, digital accessibility has become a crucial aspect of web and software development. One area that requires attention is communication for the deaf and hard-of-hearing community. 
+          This project presents a Flask-based web application that utilizes an avatar to interpret and display sign language dynamically.
+           The system leverages machine learning and natural language processing (NLP) techniques to translate text or speech input into corresponding sign language gestures, which are rendered using an animated avatar.
+      
+          The application is built using Flask for backend processing, WebSockets for real-time interaction, and a 3D animation framework such as Three.js or Babylon.js for rendering the avatar.</p>
+          <p style="color:rgb(33, 179, 45);font-size: 25px;font-weight: 400; background-color: antiquewhite;border-radius: 60px;border-width:30px;border-color: aquamarine;text-align: center;"> <br>The model is trained on a dataset of sign language gestures, ensuring accurate representation of signs. Users can input text or speech, which is processed and mapped to sign language sequences displayed by the avatar.
+          
+          This solution aims to bridge communication gaps, enhance accessibility, and provide an intuitive way for individuals to understand and use sign language. The system can be integrated into educational platforms, customer service applications,
+           and accessibility tools, fostering inclusivity for the deaf and hard-of-hearing community.
+          
+          </p>
+      </div> <br><br><br><br>
+      
+      <div style="padding-left: 150px;"> 
+        <h2 style="text-align: center;font-size: 40px;font-weight: 700;color: antiquewhite;">Avatar Info</h2>
+        <img src="https://www.researchgate.net/profile/Ahmed-Alethary/publication/365654380/figure/fig5/AS:11431281098934796@1669142216847/The-system-GUI_Q320.jpg" style="border-radius: 50px;" alt="Trulli" width="500" height="333">&nbsp;&nbsp;
+        <img src="https://www.researchgate.net/publication/370038854/figure/fig3/AS:11431281169833110@1687458191844/D-avatars_Q320.jpg" style="border-radius: 50px;" alt="Trulli" width="500" height="333"> <br> <br> <br>
+        <img src="https://resources.illc.uva.nl/illc-blog/wp-content/uploads/2020/11/house_sign-300x292.png" style="border-radius: 50px;" width="500" height="333">&nbsp;&nbsp;
+        <img src="https://llllline.com/images/thumbs/0000002865_woman-in-casual-3d-model-0076_415.jpeg" style="border-radius: 50px;" alt="Trulli" width="500" height="333">
+        
+      </div><br><br>
+      <div style="display: flex;gap: 40px;">
+        <div>
+<img src="https://img.freepik.com/free-vector/smiling-young-man-illustration_1308-174669.jpg?t=st=1743751188~exp=1743754788~hmac=bfdc68daceca8f00c3b5a9acb719fe352feecba217e459a86de7c2938c051543&w=826" width="400px" height="300px" style="border-radius: 100px;" alt="">
+        </div>
+        <div>
+            <h1 style="font-size: 30px;color: coral;font-weight: 500;">Methodology</h1>
+            <p style="font-size: 25px;color: rgb(33, 179, 45); font-weight: 400; background-color: antiquewhite;border-radius: 60px;border-width:30px;border-color: aquamarine;text-align: center;"><br> Many individuals with hearing impairments rely on sign language for communication. However, a language barrier exists between sign language users and non-sign language speakers. This project aims to develop a Flask-based system that translates text (or detected hand gestures) into sign language, visualized using a 3D avatar.</p>
+        </div>
+        
+      </div>
+    </div>
+      
+   
+      
+
+
+
+
+
+    <script type="text/javascript" src="{{ url_for('static', filename='js/script.js') }}"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
+    <!-- <script type="text/javascript" src="{{ url_for('static', filename='js/player.js') }}"></script> -->
+    <script>
+        // Check if SpeechRecognition is supported by the browser
+        const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+        if (!SpeechRecognition) {
+            alert("Your browser doesn't support speech recognition.");
+        }
+
+        // Create a new SpeechRecognition object
+        const recognition = new SpeechRecognition();
+
+        // Set language for recognition (English in this case)
+        recognition.lang = "en-US";
+
+        // Set the continuous flag to true to keep recognizing even after pauses
+        recognition.continuous = true;
+
+        // Start listening for speech when the button is clicked
+        document.getElementById("plasma-btn").addEventListener("click", function() {
+            recognition.start();
+        });
+
+        // Event when speech is detected and recognized
+        recognition.onresult = function(event) {
+            let transcript = event.results[event.resultIndex][0].transcript;
+            document.getElementById("text").textContent = transcript;
+        };
+
+        // Event when an error occurs
+        recognition.onerror = function(event) {
+            console.error("Error occurred in speech recognition: " + event.error);
+        };
+
+        // Event when speech recognition ends
+        recognition.onend = function() {
+            console.log("Speech recognition ended.");
+        };
+    // </script>
+
+  
+</body>
+</html>

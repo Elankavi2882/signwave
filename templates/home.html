@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>SignWave AI</title>
+  <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+  <style>
+    html {
+      scroll-behavior: smooth;
+    }
+    @keyframes fadeIn {
+        from {
+          opacity: 0;
+        }
+        to {
+          opacity: 1;
+        }
+      }
+      .fade-in {
+        animation: fadeIn 1.2s ease-out forwards;
+      }
+  </style>
+</head>
+
+<body style="background-image: url('{{ url_for('static', filename='images/islhistoryandart-3-scaled.jpg') }}');background-attachment: fixed;background-size: cover;background-repeat:no-repeat"; onload="CWASA.init(initCfg);";class=" text-white font-sans flex flex-col min-h-screen">
+
+
+  <!-- Navbar -->
+  <header class="flex justify-between items-center p-6 shadow-sm sticky top-0  z-10">
+    <div class="flex items-center space-x-4">
+        <img src="{{ url_for('static', filename='images/lolgo.png') }}" alt="SignWave Logo" class="h-16 w-16 object-contain">
+        <span class="text-3xl font-bold text-black tracking-wide">SignWave</span>
+      </div>
+    <nav class="space-x-6 text-sm font-medium">
+      <a href="#features" class="hover:text-black">Features</a>
+      <a href="#about" class="hover:text-black">About</a>
+      <a href="#contact" class="hover:text-black">Contact</a>
+    </nav>
+  </header>
+
+  <!-- Hero Section -->
+  <section class="flex flex-col items-center justify-center flex-grow text-center px-6 pt-20">
+    <h1 class="fade-in text-5xl md:text-6xl font-extrabold text-black leading-tight mb-6">Real-Time Speech to Sign Language</h1>
+    <p class="fade-in text-white text-lg md:text-xl mb-8 max-w-2xl">
+      AI-powered accessibility platform to bridge communication gaps — fast, natural, inclusive.
+    </p>
+    <a href="/try-now" onclick="animateButton(event)" class="px-6 py-3 rounded-full bg-indigo-600 text-white font-semibold shadow-md hover:bg-indigo-700 transition">
+        TRY NOW
+      </a>
+    
+  </section>
+
+  <!-- Features -->
+  <section id="features" class="py-20 ">
+    <div class="max-w-6xl mx-auto px-6">
+      <h2 class="fade-in text-3xl font-bold text-center text-white mb-16">Features</h2>
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-12">
+        <div class="p-8  rounded-xl shadow-sm hover:shadow-md transition">
+          <h3 class="text-xl font-semibold mb-4 text-indigo-600">Real-Time Translation</h3>
+          <p class="text-white">Instant speech-to-sign conversion with low latency and high accuracy.</p>
+        </div>
+        <div class="p-8  rounded-xl shadow-sm hover:shadow-md transition">
+          <h3 class="text-xl font-semibold mb-4 text-indigo-600">3D Animated Avatars</h3>
+          <p class="text-white">Natural, expressive avatars to deliver clear sign language gestures.</p>
+        </div>
+        <div class="p-8  rounded-xl shadow-sm hover:shadow-md transition">
+          <h3 class="text-xl font-semibold mb-4 text-indigo-600">Inclusive Communication</h3>
+          <p class="text-white">Designed for public events, government use, and digital accessibility.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- About -->
+  <section id="about" class="py-20">
+    <div class="max-w-4xl mx-auto px-6 text-center">
+      <h2 class="text-3xl font-bold text-white mb-8">About SignWave</h2>
+      <p class="text-white text-lg">
+        SignWave AI empowers the hearing and speech impaired with cutting-edge AI, bridging barriers through real-time speech-to-sign language translation.
+      </p>
+    </div>
+  </section>
+
+  <!-- Contact -->
+  <section id="contact" class="py-20 ">
+    <div class="max-w-4xl mx-auto px-6 text-center">
+      <h2 class="text-3xl font-bold text-white mb-8">Contact Us</h2>
+      <p class="text-white mb-6">Interested in a demo, collaboration, or partnership?</p>
+      <a href="mailto:contact@signwaveai.com" class="px-6 py-3 bg-indigo-600 text-white rounded-full font-semibold hover:bg-indigo-700 transition">
+        Email Us
+      </a>
+    </div>
+  </section>
+
+
+
+<script>
+    function animateButton(event) {
+      event.preventDefault();
+      const button = event.currentTarget;
+      button.classList.add('scale-90', 'duration-200');
+      
+      setTimeout(() => {
+        window.location.href = button.href;
+      }, 200); // Wait for animation to finish before navigating
+    }
+    </script>
+
+  <!-- Footer -->
+  <footer class="py-6 text-center text-sm text-gray-400">
+    © 2025 SignWave AI. All rights reserved.
+  </footer>
+
+
+
+</body>
+</html>
